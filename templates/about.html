@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}About JoeNeksis{% endblock %}
+
+{% block content %}
+   <div class="container">
+        <h1>About me!</h1>
+        <p>
+            {% for name in names %}
+                {% if name == "Sally" %}
+                    <ol>SALLY's coochh is the best!</ol>
+                {% elif name == "Wes" %}
+                    <ol>WEs sucksD</ol>
+                {% else %}
+                    <li>{{ name }}</li>
+                {% endif %}
+            {% endfor %}
+        </p>
+    </div>
+{% endblock %}
