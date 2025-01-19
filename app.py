@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import smtplib
 
 app = Flask(__name__)
 subscribers = []
@@ -22,6 +23,12 @@ def form():
     first_name = request.form.get('first_name')
     last_name = request.form.get('last_name')
     email = request.form.get('email_addr')
+
+    msg = 'You have been subscribed to my email newsletter!'
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login('yellowlabeljunk@gmail.com', '') #pwd should ben at '' , use an env var
+    server.sendmail('yellowlabeljunk@gmail.com', email, msg)
 
     if not first_name or not last_name or not email:
         err_stmt = 'All Form Fields Required...'
