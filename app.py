@@ -1,8 +1,19 @@
+import os
 from flask import Flask, render_template, request
-import smtplib
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
 subscribers = []
+
+app.config['DEBUG'] = 1
+#setting up SMTP credentials
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = os.environ.get('YLJNKMAIL')
+app.config['MAIL_PASSWORD'] = os.environ.get('YLJNKPWD')
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 
 @app.route('/')
 def index():
@@ -24,12 +35,6 @@ def form():
     last_name = request.form.get('last_name')
     email = request.form.get('email_addr')
 
-    msg = 'You have been subscribed to my email newsletter!'
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login('yellowlabeljunk@gmail.com', '') #pwd should ben at '' , use an env var
-    server.sendmail('yellowlabeljunk@gmail.com', email, msg)
-
     if not first_name or not last_name or not email:
         err_stmt = 'All Form Fields Required...'
         return render_template('subscribe.html', err_stmt=err_stmt,
@@ -37,6 +42,12 @@ def form():
                                 last_name=last_name,
                                 email=email)
 
+    #creating the msg obj
+    msg = Message(subject=f'Welcome {first_name} {last_name}!',
+                  sender=os.environ.get('YLJNKMAIL'),
+                  recipients=[email])
+    msg.body = 'You have been subscribed to my email newsletter!' 
+    mail.send(msg) 
 
     subscribers.append(f'{first_name} {last_name} | {email}')
     title = 'Thank you!'
