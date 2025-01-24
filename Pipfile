@@ -7,6 +7,12 @@ name = "pypi"
 flask = "*"
 flask-mail = "*"
 flask-sqlalchemy = "*"
+flask-login = "*"
+flask-bcrypt = "*"
+flask-wtf = "*"
+wtforms = "*"
+email-validator = "*"
+flask-migrate = "*"
 
 [dev-packages]
 

@@ -6,6 +6,17 @@
         <h1>Hello, world!</h1>
         <br><br>
         <img src="{{ url_for("static", filename="images/rose.jpeg") }}" width="500" alt="">
-
+        <br><br>
+        {# this page will have the login form, this is the login page #}
+        {% if not current_user.is_authenticated %}
+            <form method="post" action="">
+                {{ form.hidden_tag() }}
+                {{ form.username }}
+                {{ form.password }}
+                {{ form.submit }}
+            </form> 
+            <br>
+            <a href="{{ url_for("register") }}">Don't have an account? Sign up!</a>
+        {% endif %}
     </div>
 {% endblock %}
